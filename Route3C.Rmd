@@ -15,8 +15,16 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r packages, message=FALSE, warning=FALSE, include=FALSE}
 library(dplyr)
 library(sf)
+library(leaflet)
 library(tmap)
 tmap_mode("view")
+tmap_options(basemaps = c(
+  leaflet::providers$TopPlusOpen.Grey, 
+  leaflet::providers$OpenStreetMap.Mapnik, 
+  leaflet::providers$CyclOSM,   
+  leaflet::providers$OpenTopoMap,   
+  leaflet::providers$Esri.WorldImagery
+))
 ```
 
 
@@ -63,7 +71,7 @@ MADMON2 = MADMON |>
 ### Option 1
 
 ```{r map21, echo=FALSE, include=TRUE}
-tm_shape(MADMON1 |> filter(Mode != "Bike")) +
+map21 = tm_shape(MADMON1 |> filter(Mode != "Bike")) +
   tm_lines(
     lwd = 2,
     lty = "dashed",
@@ -106,6 +114,16 @@ tm_shape(MADMON1 |> filter(Mode != "Bike")) +
   tm_text("Distance") +
   tm_title("MAD-MON, option 1")
 
+m21leaf = tmap::tmap_leaflet(map21) |>  
+  leaflet::addProviderTiles("TopPlusOpen.Grey", group = "Basemap") |> 
+  leaflet::addProviderTiles("OpenStreetMap.Mapnik", group = "OpenStreetMap") |> 
+  leaflet::addProviderTiles("CyclOSM", group = "Cycle OSM") |>   
+  leaflet::addProviderTiles("OpenTopoMap", group = "Topographic") |>   
+  leaflet::addProviderTiles("Esri.WorldImagery", group = "Satelite") |> 
+  leaflet::addLayersControl(baseGroups = c("Basemap", "OpenStreetMap", "Cycle OSM", "Topographic", "Satelite"),
+                            options = layersControlOptions(collapsed = FALSE))
+
+m21leaf
 ```
 
 #### Statistics
