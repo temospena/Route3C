@@ -1,0 +1,46 @@
+---
+title: "3C Sustainable Route"
+author: "Sandro Araújo, Rosa Félix, Ricardo Ferreira"
+date: "2024-08-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 3C Project
+
+Summary
+
+## A sustainable route connecting the 4 Campi
+
+Only sustainable transportation, such as walking, cycling, train, and ferry.
+
+Destination spots with available amenities, including food, camping, and accomodation.
+
+Route profile for easy ride (not superman/woman).
+
+Stages from 35 to 100 km long.
+
+### Madrid - Coimbra
+
+This connection is a challenge.
+The train line which offers the best connection in Portugal is suspended for improvements until 2026.
+
+
+
+### Madrid - Montpellier
+
+#### Option 1
+
+
+<!-- https://www.mapchannels.com/routemaps3/map.htm?title=teste%20rota%201 -->
+
+#### Option 2
+
+
+
+### Montpellier - Turin
+
+
