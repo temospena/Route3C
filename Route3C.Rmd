@@ -18,13 +18,89 @@ library(sf)
 library(leaflet)
 library(tmap)
 tmap_mode("view")
-tmap_options(basemaps = c(
-  leaflet::providers$TopPlusOpen.Grey, 
-  leaflet::providers$OpenStreetMap.Mapnik, 
-  leaflet::providers$CyclOSM,   
-  leaflet::providers$OpenTopoMap,   
-  leaflet::providers$Esri.WorldImagery
-))
+
+```
+
+```{r map3c function}
+map3C = function(Bike, Train, Title) {
+  if (nrow(Train) == 0) {
+    tm_shape(Bike) +
+      tm_lines(
+        lwd = 5,
+        col = "Stage",
+        id = "End",
+        popup.vars = c(
+          "Stage",
+          "Start",
+          "End",
+          "Distance",
+          "Gain",
+          "Duration",
+          "EuroVelo",
+          # "Mode",
+          # "Travel",
+          "Acomodation",
+          "Notes"
+        )
+      ) +
+      tm_text("Distance") +
+      tm_title(Title) +
+      tm_basemap(providers$Esri.WorldGrayCanvas) +
+      tm_basemap(providers$OpenStreetMap) +
+      tm_basemap(providers$CyclOSM) +
+      tm_basemap(providers$OpenTopoMap) +
+      tm_basemap(providers$Esri.WorldImagery)
+    
+  } else {
+    tm_shape(Train) +
+      tm_lines(
+        lwd = 2,
+        lty = "dashed",
+        col = "grey20",
+        id = "End",
+        popup.vars = c(
+          "Stage",
+          "Start",
+          "End",
+          "Distance",
+          "Mode",
+          "Travel",
+          "Acomodation",
+          "Notes"
+        )
+      ) +
+      tm_text("Distance") +
+      tm_shape(Bike) +
+      tm_lines(
+        lwd = 4,
+        col = "Stage",
+        id = "End",
+        popup.vars = c(
+          "Stage",
+          "Start",
+          "End",
+          "Distance",
+          "Gain",
+          "Duration",
+          "EuroVelo",
+          # "Mode",
+          # "Travel",
+          "Acomodation",
+          "Notes"
+        )
+      ) +
+      tm_text("Distance") +
+      tm_title(Title) +
+      tm_basemap(providers$Esri.WorldGrayCanvas) +
+      tm_basemap(providers$OpenStreetMap) +
+      tm_basemap(providers$CyclOSM) +
+      tm_basemap(providers$OpenTopoMap) +
+      tm_basemap(providers$Esri.WorldImagery)
+    # options = layersControlOptions(collapsed = FALSE) #not working
+    
+  }
+}
+
 ```
 
 
@@ -55,75 +131,23 @@ MADCOI = st_read("route/MAD-COI.gpkg", fid_column_name = "fid", quiet = TRUE)
 
 ```{r madmon}
 MADMON = st_read("route/MAD-MON.gpkg", fid_column_name = "fid", quiet = TRUE)
-
-MADMON1 = MADMON |>
-  filter(fid %in% c(2, 3, 5, 6, 7, 13, 14, 15)) |>
-  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
-  mutate(Stage = as.character(c(0:7)))
-
-MADMON2 = MADMON |> 
-   filter(fid %in% c(2,8,12,7,13,14,15)) |> 
-   mutate(Stage = as.character(c(0,3,1,2,4,5,6))) |> 
-   arrange("Stage")
 ```
 
 
 ### Option 1
 
 ```{r map21, echo=FALSE, include=TRUE}
-map21 = tm_shape(MADMON1 |> filter(Mode != "Bike")) +
-  tm_lines(
-    lwd = 2,
-    lty = "dashed",
-    col = "grey20",
-    # lty = "lty", # cannot make this work
-    # col = "Stage"
-    id = "End",
-    popup.vars = c(
-      "Stage",
-      "Start",
-      "End",
-      "Distance",
-      "Mode",
-      "Travel",
-      "Acomodation",
-      "Notes"
-    )
-  ) +
-  tm_text("Distance") +
-  tm_shape(MADMON1 |> filter(Mode == "Bike")) +
-  tm_lines(
-    lwd = 4,
-    # lty = "lty", # cannot make this work
-    col = "Stage",
-    id = "End",
-    popup.vars = c(
-      "Stage",
-      "Start",
-      "End",
-      "Distance",
-      "Gain",
-      "Duration",
-      "EuroVelo",
-      # "Mode",
-      # "Travel",
-      "Acomodation",
-      "Notes"
-    )
-  ) +
-  tm_text("Distance") +
-  tm_title("MAD-MON, option 1")
+MADMON1 = MADMON |>
+  filter(fid %in% c(2, 3, 5, 6, 7, 13, 14, 15)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(0:7)))
 
-m21leaf = tmap::tmap_leaflet(map21) |>  
-  leaflet::addProviderTiles("TopPlusOpen.Grey", group = "Basemap") |> 
-  leaflet::addProviderTiles("OpenStreetMap.Mapnik", group = "OpenStreetMap") |> 
-  leaflet::addProviderTiles("CyclOSM", group = "Cycle OSM") |>   
-  leaflet::addProviderTiles("OpenTopoMap", group = "Topographic") |>   
-  leaflet::addProviderTiles("Esri.WorldImagery", group = "Satelite") |> 
-  leaflet::addLayersControl(baseGroups = c("Basemap", "OpenStreetMap", "Cycle OSM", "Topographic", "Satelite"),
-                            options = layersControlOptions(collapsed = FALSE))
+Bike = MADMON1 |> filter(Mode == "Bike")
+Train = MADMON1 |> filter(Mode != "Bike")
+Title = "MAD-MON, option 1"
 
-m21leaf
+map3C(Train = Train, Bike = Bike, Title = Title)
+  
 ```
 
 #### Statistics
@@ -143,49 +167,18 @@ m21leaf
 ### Option 2
 
 
-```{r map22, echo=FALSE}
-tm_shape(MADMON2 |> filter(Mode != "Bike")) +
-  tm_lines(
-    lwd = 2,
-    lty = "dashed",
-    col = "grey20",
-    # lty = "lty", # cannot make this work
-    # col = "Stage"
-    id = "End",
-    popup.vars = c(
-      "Stage",
-      "Start",
-      "End",
-      "Distance",
-      "Mode",
-      "Travel",
-      "Acomodation",
-      "Notes"
-    )
-  ) +
-  tm_text("Distance") +
-  tm_shape(MADMON2 |> filter(Mode == "Bike")) +
-  tm_lines(
-    lwd = 4,
-    # lty = "lty", # cannot make this work
-    col = "Stage",
-    id = "End",
-    popup.vars = c(
-      "Stage",
-      "Start",
-      "End",
-      "Distance",
-      "Gain",
-      "Duration",
-      "EuroVelo",
-      # "Mode",
-      # "Travel",
-      "Acomodation",
-      "Notes"
-    )
-  ) +
-  tm_text("Distance") +
-  tm_title("MAD-MON, option 2")
+```{r map22, echo=FALSE, include=TRUE}
+
+MADMON2 = MADMON |> 
+   filter(fid %in% c(2,8,12,7,13,14,15)) |> 
+   mutate(Stage = as.character(c(0,3,1,2,4,5,6))) |> 
+   arrange("Stage")
+
+Bike = MADMON2 |> filter(Mode == "Bike")
+Train = MADMON2 |> filter(Mode != "Bike")
+Title = "MAD-MON, option 2"
+
+map3C(Train = Train, Bike = Bike, Title = Title)
 
 ```
 
