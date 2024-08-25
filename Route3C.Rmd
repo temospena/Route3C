@@ -6,8 +6,19 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      include = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
 ```
+
+```{r packages, message=FALSE, warning=FALSE, include=FALSE}
+library(dplyr)
+library(sf)
+library(tmap)
+tmap_mode("view")
+```
+
 
 ## 3C Project
 
@@ -28,19 +39,143 @@ Stages from 35 to 100 km long.
 This connection is a challenge.
 The train line which offers the best connection in Portugal is suspended for improvements until 2026.
 
+```{r madcoi}
+MADCOI = st_read("route/MAD-COI.gpkg", fid_column_name = "fid", quiet = TRUE)
+```
+
+## Madrid - Montpellier
+
+```{r madmon}
+MADMON = st_read("route/MAD-MON.gpkg", fid_column_name = "fid", quiet = TRUE)
+
+MADMON1 = MADMON |>
+  filter(fid %in% c(2, 3, 5, 6, 7, 13, 14, 15)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(0:7)))
+
+MADMON2 = MADMON |> 
+   filter(fid %in% c(2,8,12,7,13,14,15)) |> 
+   mutate(Stage = as.character(c(0,3,1,2,4,5,6))) |> 
+   arrange("Stage")
+```
 
 
-### Madrid - Montpellier
+### Option 1
 
-#### Option 1
+```{r map21, echo=FALSE, include=TRUE}
+tm_shape(MADMON1 |> filter(Mode != "Bike")) +
+  tm_lines(
+    lwd = 2,
+    lty = "dashed",
+    col = "grey20",
+    # lty = "lty", # cannot make this work
+    # col = "Stage"
+    id = "End",
+    popup.vars = c(
+      "Stage",
+      "Start",
+      "End",
+      "Distance",
+      "Mode",
+      "Travel",
+      "Acomodation",
+      "Notes"
+    )
+  ) +
+  tm_text("Distance") +
+  tm_shape(MADMON1 |> filter(Mode == "Bike")) +
+  tm_lines(
+    lwd = 4,
+    # lty = "lty", # cannot make this work
+    col = "Stage",
+    id = "End",
+    popup.vars = c(
+      "Stage",
+      "Start",
+      "End",
+      "Distance",
+      "Gain",
+      "Duration",
+      "EuroVelo",
+      # "Mode",
+      # "Travel",
+      "Acomodation",
+      "Notes"
+    )
+  ) +
+  tm_text("Distance") +
+  tm_title("MAD-MON, option 1")
 
+```
+
+#### Statistics
+
+*   Total Gain = `r sum(MADMON1$Gain, na.rm=T)`
+*   Total Days = `r table(MADMON1$Mode)[[1]]`
+*   Days on Bike = 6
+*   Accommodation cost = `r sum(MADMON1$Acomodation, na.rm=T)`
+
+#### Pros and Cons
+
+* 1 day longer
+* shorter stages
 
 <!-- https://www.mapchannels.com/routemaps3/map.htm?title=teste%20rota%201 -->
 
-#### Option 2
+### Option 2
+
+
+```{r map22, echo=FALSE}
+tm_shape(MADMON2 |> filter(Mode != "Bike")) +
+  tm_lines(
+    lwd = 2,
+    lty = "dashed",
+    col = "grey20",
+    # lty = "lty", # cannot make this work
+    # col = "Stage"
+    id = "End",
+    popup.vars = c(
+      "Stage",
+      "Start",
+      "End",
+      "Distance",
+      "Mode",
+      "Travel",
+      "Acomodation",
+      "Notes"
+    )
+  ) +
+  tm_text("Distance") +
+  tm_shape(MADMON2 |> filter(Mode == "Bike")) +
+  tm_lines(
+    lwd = 4,
+    # lty = "lty", # cannot make this work
+    col = "Stage",
+    id = "End",
+    popup.vars = c(
+      "Stage",
+      "Start",
+      "End",
+      "Distance",
+      "Gain",
+      "Duration",
+      "EuroVelo",
+      # "Mode",
+      # "Travel",
+      "Acomodation",
+      "Notes"
+    )
+  ) +
+  tm_text("Distance") +
+  tm_title("MAD-MON, option 2")
+
+```
 
 
 
-### Montpellier - Turin
+## Montpellier - Turin
 
+```{r montur}
+MONTUR = st_read("route/MON-TUR.gpkg", fid_column_name = "fid", quiet = TRUE)
+```
 
