@@ -2,7 +2,12 @@
 title: "3C Sustainable Route"
 author: "Sandro Araújo, Rosa Félix, Ricardo Ferreira"
 date: "2024-08-22"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: false
+    toc_depth: 3
 ---
 
 ```{r setup, include=FALSE}
@@ -109,7 +114,7 @@ Food = 40
 
 Summary
 
-## A sustainable route connecting the 4 Campi
+### A sustainable route connecting the 4 Campi
 
 Only sustainable transportation, such as walking, cycling, train, and ferry.
 
@@ -119,13 +124,133 @@ Route profile for easy ride (not superman/woman).
 
 Stages from 35 to 100 km long.
 
-## Madrid - Coimbra
+## Madrid - Coimbra {.tabset .tabset-pills}
 
 This connection is a challenge. The train line which offers the best connection in Portugal is suspended for improvements until 2026.
 
 ```{r madcoi}
 MADCOI = st_read("route/MAD-COI.gpkg", fid_column_name = "fid", quiet = TRUE)
 ```
+
+
+### Option 1 {.active}
+
+```{r map11, echo=FALSE, include=TRUE}
+MADCOI1 = MADCOI |>
+  filter(fid %in% c(16,20:25)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(0:6)))
+
+Bike = MADCOI1 |> filter(Mode == "Bike")
+Train = MADCOI1 |> filter(Mode != "Bike")
+Title = "MAD-COI, option 1"
+
+map3C(Train = Train, Bike = Bike, Title = Title)
+
+Days = 7
+```
+
+```{r table11, echo=FALSE, include=TRUE}
+knitr::kable(
+  MADCOI1 |> 
+    filter(Mode == "Bike") |> 
+    st_drop_geometry() |> 
+    mutate(Stage = as.integer(Stage)) |>
+    arrange(Stage) |> 
+    select(
+    Stage,
+    Start,
+    End,
+    Distance,
+    Gain,
+    Duration,
+    # EuroVelo,
+    # Acomodation,
+    Notes
+  )  |> arrange(Stage),
+  caption = "Option 1 bike stages"
+) |> 
+  # NA as empty cell
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
+
+#### Statistics
+
+-   Total Bike Distance: `r sum(MADCOI1$Distance[MADCOI1$Mode == "Bike"], na.rm=T)` km
+-   Total Up Gain: `r sum(MADCOI1$Gain, na.rm=T)` m
+-   Total Days: `r Days`
+-   Days on Bike: `r table(MADCOI1$Mode)[[1]]`
+-   Accommodation cost: `r sum(MADCOI1$Acomodation, na.rm=T)-55` €
+-   Train cost: `r sum(MADCOI1$Travel[MADCOI1$Mode == "Train"], na.rm=T)` €
+-   Food cost: `r Days*Food`€
+-   Total cost per person: `r sum(MADCOI1$Acomodation, na.rm=T)-55 + sum(MADCOI1$Travel[MADCOI1$Mode == "Train"], na.rm=T) + Days*Food`€
+-   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
+
+#### Pros and Cons
+
+-   Train to Salamanca jumps arid region
+-   Less days, with balanced distances
+-   Not very hard stages
+-   Uses some secondary state roads
+
+### Option 2
+
+```{r map12, echo=FALSE, include=TRUE}
+MADCOI2 = MADCOI |>
+  filter(fid %in% c(17:19,20:25)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(0:8)))
+
+Bike = MADCOI2 |> filter(Mode == "Bike")
+Train = MADCOI2 |> filter(Mode != "Bike")
+Title = "MAD-COI, option 2"
+
+map3C(Train = Train, Bike = Bike, Title = Title)
+
+Days = 9
+```
+
+```{r table12, echo=FALSE, include=TRUE}
+knitr::kable(
+  MADCOI2 |> 
+    filter(Mode == "Bike") |> 
+    st_drop_geometry() |> 
+    mutate(Stage = as.integer(Stage)) |>
+    arrange(Stage) |> 
+    select(
+    Stage,
+    Start,
+    End,
+    Distance,
+    Gain,
+    Duration,
+    # EuroVelo,
+    # Acomodation,
+    Notes
+  )  |> arrange(Stage),
+  caption = "Option 2 bike stages"
+) |> 
+  # NA as empty cell
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
+
+#### Statistics
+
+-   Total Bike Distance: `r sum(MADCOI2$Distance[MADCOI2$Mode == "Bike"], na.rm=T)` km
+-   Total Up Gain: `r sum(MADCOI2$Gain, na.rm=T)` m
+-   Total Days: `r Days`
+-   Days on Bike: `r table(MADCOI2$Mode)[[1]]`
+-   Accommodation cost: `r sum(MADCOI2$Acomodation, na.rm=T)` €
+-   Train cost: `r sum(MADCOI2$Travel[MADCOI2$Mode == "Train"], na.rm=T)` €
+-   Food cost: `r Days*Food`€
+-   Total cost per person: `r sum(MADCOI2$Acomodation, na.rm=T) + sum(MADCOI2$Travel[MADCOI2$Mode == "Train"], na.rm=T) + Days*Food`€
+-   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
+
+#### Pros and Cons
+
+-   More days
+-   Not very hard stages
+-   Uses some secondary state roads
 
 ## Madrid - Montpellier {.tabset .tabset-pills}
 
@@ -161,7 +286,7 @@ map3C(Train = Train, Bike = Bike, Title = Title)
 Days = 8
 ```
 
-```{r table11, echo=FALSE, include=TRUE}
+```{r table21, echo=FALSE, include=TRUE}
 knitr::kable(
   MADMON1 |> 
     filter(Mode == "Bike") |> 
@@ -223,7 +348,7 @@ map3C(Train = Train, Bike = Bike, Title = Title)
 Days = 7
 
 ```
-```{r table12, echo=FALSE, include=TRUE}
+```{r table22, echo=FALSE, include=TRUE}
 knitr::kable(
   MADMON2 |> 
     filter(Mode == "Bike") |> 
