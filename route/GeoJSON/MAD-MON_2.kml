@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="MAD_MON_2" id="MAD_MON_2">
+	<SimpleField name="Stage" type="string"></SimpleField>
+	<SimpleField name="Alternative" type="string"></SimpleField>
+	<SimpleField name="Mode" type="string"></SimpleField>
+	<SimpleField name="Start" type="string"></SimpleField>
+	<SimpleField name="End" type="string"></SimpleField>
+	<SimpleField name="EuroVelo" type="string"></SimpleField>
+	<SimpleField name="Distance" type="float"></SimpleField>
+	<SimpleField name="Gain" type="float"></SimpleField>
+	<SimpleField name="Duration" type="float"></SimpleField>
+	<SimpleField name="Acomodation" type="int"></SimpleField>
+	<SimpleField name="Travel" type="int"></SimpleField>
+	<SimpleField name="Notes" type="string"></SimpleField>
+	<SimpleField name="fid" type="string"></SimpleField>
+</Schema>
+<Folder><name>MAD_MON_2</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#MAD_MON_2">
+		<SimpleData name="Stage">0</SimpleData>
+		<SimpleData name="Mode">Train</SimpleData>
+		<SimpleData name="Start">Madrid, ES</SimpleData>
+		<SimpleData name="End">Barcelona, ES</SimpleData>
+		<SimpleData name="Distance">503</SimpleData>
+		<SimpleData name="Duration">3</SimpleData>
+		<SimpleData name="Travel">20</SimpleData>
+		<SimpleData name="fid">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><LineString><coordinates>-3.68849335430397,40.4047823230352 2.13981316432917,41.3789307485625</coordinates></LineString></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "MAD-MON_1",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Stage": "0", "Alternative": null, "Mode": "Air", "Start": "Lisbon, PT", "End": "Madrid, ES", "EuroVelo": null, "Distance": 514.0, "Gain": null, "Duration": 1.3, "Acomodation": null, "Travel": 70, "Notes": null, "fid": "1" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ -9.13382081883549, 38.769330334173731 ], [ -3.570670626882571, 40.476213100941045 ], [ -3.570670626882571, 40.476213100941045 ] ] ] } }
+]
+}
