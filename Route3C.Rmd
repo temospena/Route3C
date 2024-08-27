@@ -13,8 +13,8 @@ output:
     toc_collapsed: false
     toc_depth: 3
     df_print: kable
-    code_folding: hide
-    code_download: false
+    # code_folding: hide
+    # code_download: false
   # html_document:
   #   toc: true
   #   toc_float:
@@ -126,7 +126,7 @@ Food = 40
 
 The **3Cs - Cycling, Campus & City** Program will facilitate travel between Cities and Campuses through more sustainable means of transport and promoting the health and well-being of the universities community.
 
-![](images/clipboard-2318112117.png){align="centre" width="254"}
+![](images/clipboard-2318112117.png){align="centre" width="300"}
 
 The central scope of this working group under the Erasmus + programme is to promote sustainability through sport and ecological mobility and identify, promote, improve, and enhance an active and green mobility. Bicycle, whether electric or conventional, will be used as the main means of transport, and cycle paths will be identified and promoted, primarily to, from and within the university campus and the city. Other forms of healthy and active mobility will also be explored in this project such as walking. Overall, it aims to identify good practices, collect data from the pilot group of participants by using a tool produced by the project and through two studies (habits and behaviours and best routes), collect practical and educational content, promote sustainable travel habits, change behaviours for greater local and European impact and raise awareness of the importance of contributing to a greener world through sport and use of sustainable means of transport.
 
@@ -141,13 +141,17 @@ This route (in test mode) will connect the 4 campi of the Project's partners:
 -   Universite Paul-Valery Montpellier 3
 -   Universita Degli Studi di Torino
 
-Only sustainable transportation is used, such as walking, cycling, train, and ferry.
+#### Criteria used for planning the routes
 
-Destination spots with available amenities, including food, camping, and accommodation.
+-   Only sustainable transportation is used, such as walking, cycling, train, and ferry.
 
-Route profile for easy ride (not superman/woman).
+-   Destination spots with available amenities, including food, camping, and accommodation.
 
-Stages from 35 to 100 km long.
+-   Route profile for easy ride (not superman/woman).
+
+-   Stages from 35 to 100 km long.
+
+-   Avoid gravel and busy roads as much as possible.
 
 ## Madrid - Coimbra {.tabset .tabset-pills}
 
