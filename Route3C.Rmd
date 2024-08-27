@@ -1,7 +1,7 @@
 ---
 title: "3C Sustainable Route"
 author: "Sandro Araújo, Rosa Félix, Ricardo Ferreira"
-date: "2024-08-22"
+date: "`r Sys.Date()`"
 output: 
   html_document:
     toc: true
@@ -112,13 +112,26 @@ Food = 40
 
 ## 3C Project
 
-Summary
+The **3Cs - Cycling, Campus & City** Program will facilitate travel between Cities and Campuses through more sustainable means of transport and promoting the health and well-being of the universities community.
+
+![](images/clipboard-2318112117.png){align="centre" width="254"}
+
+The central scope of this working group under the Erasmus + programme is to promote sustainability through sport and ecological mobility and identify, promote, improve, and enhance an active and green mobility. Bicycle, whether electric or conventional, will be used as the main means of transport, and cycle paths will be identified and promoted, primarily to, from and within the university campus and the city. Other forms of healthy and active mobility will also be explored in this project such as walking. Overall, it aims to identify good practices, collect data from the pilot group of participants by using a tool produced by the project and through two studies (habits and behaviours and best routes), collect practical and educational content, promote sustainable travel habits, change behaviours for greater local and European impact and raise awareness of the importance of contributing to a greener world through sport and use of sustainable means of transport.
+
+The “3Cs - Cycling, Campus & City” project is funded by the European Union.
 
 ### A sustainable route connecting the 4 Campi
 
-Only sustainable transportation, such as walking, cycling, train, and ferry.
+This route (in test mode) will connect the 4 campi of the Project's partners:
 
-Destination spots with available amenities, including food, camping, and accomodation.
+-   Universidade de Coimbra
+-   Universidad Camilo Jose Cel, Centro de Ensenanza Universitaria Sek Saucjc (Madrid)
+-   Universite Paul-Valery Montpellier 3
+-   Universita Degli Studi di Torino
+
+Only sustainable transportation is used, such as walking, cycling, train, and ferry.
+
+Destination spots with available amenities, including food, camping, and accommodation.
 
 Route profile for easy ride (not superman/woman).
 
@@ -131,7 +144,6 @@ This connection is a challenge. The train line which offers the best connection 
 ```{r madcoi}
 MADCOI = st_read("route/MAD-COI.gpkg", fid_column_name = "fid", quiet = TRUE)
 ```
-
 
 ### Option 1 {.active}
 
@@ -259,6 +271,7 @@ For all the options, we opt to take the high-speed train from Madrid to Barcelon
 ```{r madmon}
 MADMON = st_read("route/MAD-MON.gpkg", fid_column_name = "fid", quiet = TRUE)
 ```
+
 ```{r export geojson, eval=FALSE}
 # export to geojson
 for (i in MADMON$fid) {
@@ -267,7 +280,6 @@ for (i in MADMON$fid) {
 }
 # I thought it would be useful for elevation profile but does not work with ORS
 ```
-
 
 ### Option 1 {.active}
 
@@ -348,6 +360,7 @@ map3C(Train = Train, Bike = Bike, Title = Title)
 Days = 7
 
 ```
+
 ```{r table22, echo=FALSE, include=TRUE}
 knitr::kable(
   MADMON2 |> 
@@ -371,7 +384,6 @@ knitr::kable(
   # NA as empty cell
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
-
 
 #### Statistics
 
@@ -413,6 +425,7 @@ map3C(Train = Train, Bike = Bike, Title = Title)
 
 Days = 9
 ```
+
 ```{r table31, echo=FALSE, include=TRUE}
 knitr::kable(
   MONTUR1 |> 
@@ -455,7 +468,7 @@ knitr::kable(
 -   1 longer stage 79km with constant 1% uphill
 -   cheaper
 
-### Option 2 
+### Option 2
 
 ```{r map32, echo=FALSE, include=TRUE}
 MONTUR2 = MONTUR |>
@@ -471,6 +484,7 @@ map3C(Train = Train, Bike = Bike, Title = Title)
 
 Days = 10
 ```
+
 ```{r table32, echo=FALSE, include=TRUE}
 knitr::kable(
   MONTUR2 |> 
@@ -510,7 +524,7 @@ knitr::kable(
 #### Pros and Cons
 
 -   2 days on train (6h + 3h30)
--   2 shorter stages 
+-   2 shorter stages
 
 ### Option 3
 
@@ -552,7 +566,6 @@ knitr::kable(
   # NA as empty cell
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
-
 
 #### Statistics
 
@@ -614,7 +627,6 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
-
 #### Statistics
 
 -   Total Bike Distance: `r sum(MONTUR4$Distance[MONTUR4$Mode == "Bike"], na.rm=T)` km
@@ -674,7 +686,6 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
-
 #### Statistics
 
 -   Total Bike Distance: `r sum(MONTUR5$Distance[MONTUR5$Mode == "Bike"], na.rm=T)` km
@@ -733,7 +744,6 @@ knitr::kable(
   # NA as empty cell
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
-
 
 #### Statistics
 
