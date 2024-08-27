@@ -58,25 +58,7 @@ map3C = function(Bike, Train, Title) {
       tm_basemap(providers$Esri.WorldImagery)
     
   } else {
-    tm_shape(Train) +
-      tm_lines(
-        lwd = 2,
-        lty = "dashed",
-        col = "grey20",
-        id = "End",
-        popup.vars = c(
-          "Stage",
-          "Start",
-          "End",
-          "Distance",
-          "Mode",
-          "Travel",
-          "Acomodation",
-          "Notes"
-        )
-      ) +
-      tm_text("Distance") +
-      tm_shape(Bike) +
+    tm_shape(Bike) +
       tm_lines(
         lwd = 4,
         col = "Stage",
@@ -91,6 +73,24 @@ map3C = function(Bike, Train, Title) {
           "EuroVelo",
           # "Mode",
           # "Travel",
+          "Acomodation",
+          "Notes"
+        )
+      ) +
+      tm_text("Distance") +
+      tm_shape(Train) +
+      tm_lines(
+        lwd = 2,
+        lty = "dashed",
+        col = "grey20",
+        id = "End",
+        popup.vars = c(
+          "Stage",
+          "Start",
+          "End",
+          "Distance",
+          "Mode",
+          "Travel",
           "Acomodation",
           "Notes"
         )
@@ -182,8 +182,8 @@ knitr::kable(
 -   Days on Bike: `r table(MADCOI1$Mode)[[1]]`
 -   Accommodation cost: `r sum(MADCOI1$Acomodation, na.rm=T)-55` €
 -   Train cost: `r sum(MADCOI1$Travel[MADCOI1$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MADCOI1$Acomodation, na.rm=T)-55 + sum(MADCOI1$Travel[MADCOI1$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MADCOI1$Acomodation, na.rm=T)-55 + sum(MADCOI1$Travel[MADCOI1$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
 
 #### Pros and Cons
@@ -242,8 +242,8 @@ knitr::kable(
 -   Days on Bike: `r table(MADCOI2$Mode)[[1]]`
 -   Accommodation cost: `r sum(MADCOI2$Acomodation, na.rm=T)` €
 -   Train cost: `r sum(MADCOI2$Travel[MADCOI2$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MADCOI2$Acomodation, na.rm=T) + sum(MADCOI2$Travel[MADCOI2$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MADCOI2$Acomodation, na.rm=T) + sum(MADCOI2$Travel[MADCOI2$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
 
 #### Pros and Cons
@@ -318,8 +318,8 @@ knitr::kable(
 -   Days on Bike: `r table(MADMON1$Mode)[[1]]`
 -   Accommodation cost: `r sum(MADMON1$Acomodation, na.rm=T)` €
 -   Train cost: `r sum(MADMON1$Travel[MADMON1$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MADMON1$Acomodation, na.rm=T) + sum(MADMON1$Travel[MADMON1$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MADMON1$Acomodation, na.rm=T) + sum(MADMON1$Travel[MADMON1$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 70+150` €
 
 #### Pros and Cons
@@ -381,8 +381,8 @@ knitr::kable(
 -   Days on Bike: `r table(MADMON2$Mode)[[1]]`
 -   Accommodation cost: `r sum(MADMON2$Acomodation, na.rm=T)` €
 -   Train cost: `r sum(MADMON2$Travel[MADMON2$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MADMON2$Acomodation, na.rm=T) + sum(MADMON2$Travel[MADMON2$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MADMON2$Acomodation, na.rm=T) + sum(MADMON2$Travel[MADMON2$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 70+150` €
 
 #### Pros and Cons
@@ -445,8 +445,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR1$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR1$Acomodation, na.rm=T)+60` €
 -   Train cost: `r sum(MONTUR1$Travel[MONTUR1$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR1$Acomodation, na.rm=T)+60 + sum(MONTUR1$Travel[MONTUR1$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR1$Acomodation, na.rm=T)+60 + sum(MONTUR1$Travel[MONTUR1$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
@@ -503,8 +503,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR2$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR2$Acomodation, na.rm=T)+60` €
 -   Train cost: `r sum(MONTUR2$Travel[MONTUR2$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR2$Acomodation, na.rm=T)+60 + sum(MONTUR2$Travel[MONTUR2$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR2$Acomodation, na.rm=T)+60 + sum(MONTUR2$Travel[MONTUR2$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
@@ -562,8 +562,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR3$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR3$Acomodation, na.rm=T)-65` €
 -   Train cost: `r sum(MONTUR3$Travel[MONTUR3$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR3$Acomodation, na.rm=T)-65 + sum(MONTUR3$Travel[MONTUR3$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR3$Acomodation, na.rm=T)-65 + sum(MONTUR3$Travel[MONTUR3$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
@@ -623,8 +623,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR4$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR4$Acomodation, na.rm=T)-65` €
 -   Train cost: `r sum(MONTUR4$Travel[MONTUR4$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR4$Acomodation, na.rm=T)-65 + sum(MONTUR4$Travel[MONTUR4$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR4$Acomodation, na.rm=T)-65 + sum(MONTUR4$Travel[MONTUR4$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
@@ -683,8 +683,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR5$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR5$Acomodation, na.rm=T)-11` €
 -   Train cost: `r sum(MONTUR5$Travel[MONTUR5$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR5$Acomodation, na.rm=T)-11 + sum(MONTUR5$Travel[MONTUR5$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR5$Acomodation, na.rm=T)-11 + sum(MONTUR5$Travel[MONTUR5$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
@@ -743,8 +743,8 @@ knitr::kable(
 -   Days on Bike: `r table(MONTUR6$Mode)[[1]]`
 -   Accommodation cost: `r sum(MONTUR6$Acomodation, na.rm=T)-21` €
 -   Train cost: `r sum(MONTUR6$Travel[MONTUR6$Mode == "Train"], na.rm=T)` €
--   Food cost: `r Days*Food`€
--   Total cost per person: `r sum(MONTUR6$Acomodation, na.rm=T)-21 + sum(MONTUR6$Travel[MONTUR6$Mode == "Train"], na.rm=T) + Days*Food`€
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(MONTUR6$Acomodation, na.rm=T)-21 + sum(MONTUR6$Travel[MONTUR6$Mode == "Train"], na.rm=T) + Days*Food` €
 -   [Extra] Air cost (from Lisbon to Start and from End to Lisbon): `r 150+130` €
 
 #### Pros and Cons
