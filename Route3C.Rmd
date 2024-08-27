@@ -1,13 +1,25 @@
 ---
 title: "3C Sustainable Route"
-author: "Sandro Araújo, Rosa Félix, Ricardo Ferreira"
+author: 
+  - name: "Sandro Araújo"
+  - name: "Rosa Félix"
+  - name: "Ricardo Ferreira"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    toc: true
-    toc_float:
-      toc_collapsed: false
+  rmdformats::readthedown:
+    self_contained: true
+    theme: readable
+    toc_float: true
+    toc_collapsed: false
     toc_depth: 3
+    df_print: kable
+    code_folding: hide
+    code_download: false
+  # html_document:
+  #   toc: true
+  #   toc_float:
+  #     toc_collapsed: false
+  #   toc_depth: 3
 ---
 
 ```{r setup, include=FALSE}
