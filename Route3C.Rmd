@@ -153,15 +153,139 @@ This route (in test mode) will connect the 4 campi of the Project's partners:
 
 -   Avoid gravel and busy roads as much as possible.
 
-## Madrid - Coimbra {.tabset .tabset-pills}
+## Coimbra - Madrid {.tabset .tabset-pills}
 
-This connection is a challenge. The train line which offers the best connection in Portugal is suspended for improvements until 2026.
+This connection is a challenge.
+The train line which offers the best connection in Portugal is suspended for improvements until 2026.
 
 ```{r madcoi}
 MADCOI = st_read("route/MAD-COI.gpkg", fid_column_name = "fid", quiet = TRUE)
+COIMAD = st_read("route/COI-MAD.gpkg", fid_column_name = "fid", quiet = TRUE)
 ```
 
-### Option 1 {.active}
+### Option 1 COI-MAD {.active}
+
+```{r map13, echo=FALSE, include=TRUE}
+COIMAD1 = COIMAD |>
+  filter(fid %in% c(31:34,27)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(5,1:4)))
+
+Bike = COIMAD1 |> filter(Mode == "Bike")
+Train = COIMAD1 |> filter(Mode != "Bike")
+Title = "COI-MAD, option 1"
+
+map3C(Train = Train, Bike = Bike, Title = Title)
+
+Days = 6
+```
+
+```{r table13, echo=FALSE, include=TRUE}
+knitr::kable(
+  COIMAD1 |> 
+    filter(Mode == "Bike") |> 
+    st_drop_geometry() |> 
+    mutate(Stage = as.integer(Stage)) |>
+    arrange(Stage) |> 
+    select(
+    Stage,
+    Start,
+    End,
+    Distance,
+    Gain,
+    Duration,
+    # EuroVelo,
+    # Acomodation,
+    Notes
+  )  |> arrange(Stage),
+  caption = "Option 1 COI-MAD bike stages"
+) |> 
+  # NA as empty cell
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
+
+#### Statistics
+
+-   Total Bike Distance: `r sum(COIMAD1$Distance[COIMAD1$Mode == "Bike"], na.rm=T)` km
+-   Total Up Gain: `r sum(COIMAD1$Gain, na.rm=T)` m
+-   Total Days: `r Days`
+-   Days on Bike: `r table(COIMAD1$Mode)[[1]]`
+-   Accommodation cost: `r sum(COIMAD1$Acomodation, na.rm=T)+60-50` €
+-   Train cost: `r sum(COIMAD1$Travel[COIMAD1$Mode == "Train"], na.rm=T)` €
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(COIMAD1$Acomodation, na.rm=T)+60-50 + sum(COIMAD1$Travel[COIMAD1$Mode == "Train"], na.rm=T) + Days*Food` €
+-   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
+
+#### Pros and Cons
+
+-   Less days, with shorter distances
+-   Not very hard stages
+-   Uses some secondary state roads
+-   A good first trial
+-   There is an **alternative** to take the train to Vale de Prazeres (before Fundão), and skip 11 km fo the first stage, possibly start pedalling right away the remaining 35 almost flat km, when arriving at 15h15. This would skip a travel day.
+
+### Option 2 COI-MAD
+
+```{r map14, echo=FALSE, include=TRUE}
+COIMAD2 = COIMAD |>
+  filter(fid %in% c(31:38)) |>
+  # mutate(lty = ifelse(Mode == "Train", "dashed", "solid"))
+  mutate(Stage = as.character(c(1:7,7)))
+
+Bike = COIMAD2 |> filter(Mode == "Bike")
+Train = COIMAD2 |> filter(Mode != "Bike")
+Title = "COI-MAD, option 2"
+
+map3C(Train = Train, Bike = Bike, Title = Title)
+
+Days = 8
+```
+
+```{r table14, echo=FALSE, include=TRUE}
+knitr::kable(
+  COIMAD2 |> 
+    filter(Mode == "Bike") |> 
+    st_drop_geometry() |> 
+    mutate(Stage = as.integer(Stage)) |>
+    arrange(Stage) |> 
+    select(
+    Stage,
+    Start,
+    End,
+    Distance,
+    Gain,
+    Duration,
+    # EuroVelo,
+    # Acomodation,
+    Notes
+  )  |> arrange(Stage),
+  caption = "Option 1 COI-MAD bike stages"
+) |> 
+  # NA as empty cell
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+```
+
+#### Statistics
+
+-   Total Bike Distance: `r sum(COIMAD2$Distance[COIMAD2$Mode == "Bike"], na.rm=T)` km
+-   Total Up Gain: `r sum(COIMAD2$Gain, na.rm=T)` m
+-   Total Days: `r Days`
+-   Days on Bike: `r table(COIMAD2$Mode)[[1]]`
+-   Accommodation cost: `r sum(COIMAD2$Acomodation, na.rm=T)+60-50` €
+-   Train cost: `r sum(COIMAD2$Travel[COIMAD2$Mode == "Train"], na.rm=T)` €
+-   Food cost: `r Days*Food` €
+-   Total cost per person: `r sum(COIMAD2$Acomodation, na.rm=T)+60-50 + sum(COIMAD2$Travel[COIMAD2$Mode == "Train"], na.rm=T) + Days*Food` €
+-   [Extra] Air and Train cost (from Lisbon to Start and from End to Lisbon): `r 70+20` €
+
+#### Pros and Cons
+
+-   More days, still with shorter distances
+-   Not very hard stages
+-   Uses some secondary state roads
+-   Uses train to arrive to Madrid. If well planned, the last stage can be done all in 1 day (54 km bike + 1h train + air back to Lisbon)
+-   There is an **alternative** to take the train to Vale de Prazeres (before Fundão), and skip 11 km fo the first stage, possibly start pedalling right away the remaining 35 almost flat km, when arriving at 15h15. This would skip a travel day.
+
+### Option 1 MAD-COI
 
 ```{r map11, echo=FALSE, include=TRUE}
 MADCOI1 = MADCOI |>
@@ -221,7 +345,7 @@ knitr::kable(
 -   Not very hard stages
 -   Uses some secondary state roads
 
-### Option 2
+### Option 2 MAD-COI
 
 ```{r map12, echo=FALSE, include=TRUE}
 MADCOI2 = MADCOI |>
