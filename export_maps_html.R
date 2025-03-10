@@ -1,6 +1,7 @@
 library(tidyverse)
 library(sf)
 library(tmap)
+tmap_mode("view")
 library(mapview)
 
 # Data
@@ -33,7 +34,7 @@ Routes$Stage[Routes$Start == "Vias Plage"] = 9
 Routes$Stage[Routes$Start == "Montpellier"] = 10
 
 # Maps function with route in different colors ans with Distance labeled
-map3C_new = function(Bike, Train, Places, Title) {
+map3C_new = function(Bike, Train, Places, StartEnd, Title) {
   if (nrow(Train) == 0) {
     tm_shape(Bike) +
       tm_lines(
@@ -63,6 +64,9 @@ map3C_new = function(Bike, Train, Places, Title) {
       tm_basemap(providers$Esri.WorldImagery)
     
   } else {
+    tm_shape(StartEnd, zindex = 0) +
+      tm_symbols(fill = "darkred", col_alpha = 0, size = 0.6) +
+      tm_text("Place", ymod = 2, xmod = -3) +
     tm_shape(Places, zindex = 0) +
       tm_symbols(size = 0.3, fill = "grey40") +
       # tm_text("Place") +
@@ -115,7 +119,7 @@ map3C_new = function(Bike, Train, Places, Title) {
   }
 }
 
-map3C_all = function(Bike, Train, Places, Title) {
+map3C_all = function(Bike, Train, Places, StartEnd, Title) {
     tm_shape(Places, zindex = 0) +
       tm_symbols(size = 0.2, fill = "grey40") +
       # tm_text("Place") +
@@ -146,6 +150,7 @@ map3C_all = function(Bike, Train, Places, Title) {
         lty = "dashed",
         col = "grey20",
         # id = "End",
+        # legend.show = TRUE,
         popup.vars = c(
           "Name",
           "Start",
@@ -157,6 +162,16 @@ map3C_all = function(Bike, Train, Places, Title) {
           # "Notes"
         )
       ) +
+      # tm_add_legend(type = "lines", # for train. not working.
+      #               lwd = 1.5,
+      #               lty = "dashed",
+      #               col = "grey20",
+      #               labels = "Train",
+      #               position = "bottomright") +
+      tm_shape(StartEnd, zindex = 0) +
+        # tm_markers() +
+        tm_symbols(fill = "darkred", col_alpha = 0, size = 0.6) +
+        tm_text("Place", ymod = 2, xmod = -3) +
       # tm_text("Distance") +
       tm_title(Title) +
       tm_basemap(providers$Esri.WorldGrayCanvas) +
@@ -175,20 +190,24 @@ map3C_all = function(Bike, Train, Places, Title) {
 Bike1 = Routes1 |> filter(Mode == "Bike")
 Train1 = Routes1 |> filter(Mode != "Bike")
 Title1 = "Section 1: Coimbra - Madrid"
+StartEnd1 = Places1 |> filter(Place == "Coimbra" | Place == "Madrid")
 
-map3C_new(Train = Train1, Bike = Bike1, Places = Places1, Title = Title1)
+map3C_new(Train = Train1, Bike = Bike1, Places = Places1, StartEnd = StartEnd1, Title = Title1)
 
 # Section 2
 Bike2 = Routes2 |> filter(Mode == "Bike")
 Train2 = Routes2 |> filter(Mode != "Bike")
 Title2 = "Section 2: Madrid - Montpellier"
+StartEnd2 = Places2 |> filter(Place == "Madrid" | Place == "Montpellier")
 
-map3C_new(Train = Train2, Bike = Bike2, Places = Places2, Title = Title2)
+map3C_new(Train = Train2, Bike = Bike2, Places = Places2, StartEnd = StartEnd2, Title = Title2)
 
 
 # All 3 sections
 Bike_all = Routes |> filter(Mode == "Bike")
 Train_all = Routes |> filter(Mode != "Bike")
 Title_all = "Route 3c: Coimbra - Madrid - Montpellier"
+StartEnd_all = Places |> filter(Place == "Coimbra" | Place == "Madrid" | Place == "Montpellier")
+StartEnd_all = StartEnd_all[-3,]
 
-map3C_all(Train = Train_all, Bike = Bike_all, Places = Places, Title = Title_all)
+map3C_all(Train = Train_all, Bike = Bike_all, Places = Places, StartEnd = StartEnd_all, Title = Title_all)
