@@ -22,16 +22,28 @@ Places2 = st_read("osm-gpx/site/Places_stage2.gpkg")
 st_geometry(Places2) = "geometry"
 Routes2 = st_read("osm-gpx/site/Routes_stage2.gpkg")
 
+## Section 3
+Places3 = st_read("osm-gpx/site/Places_stage3.gpkg")
+st_geometry(Places3) = "geometry"
+Routes3 = st_read("osm-gpx/site/Routes_stage3.gpkg")
 
 ## All together
-Places = rbind(Places1, Places2)
-Routes = rbind(Routes1, Routes2)
+Places = rbind(Places1, Places2, Places3)
+Routes = rbind(Routes1, Routes2, Routes3)
 Routes$Stage[Routes$Start == "Madrid"] = 6
 Routes$Stage[Routes$Start == "Portbou"] = 6
 Routes$Stage[Routes$Start == "Canet-en-Roussillon"] = 7
 Routes$Stage[Routes$Start == "Gruissan"] = 8
 Routes$Stage[Routes$Start == "Vias Plage"] = 9
 Routes$Stage[Routes$Start == "Montpellier"] = 10
+Routes$Stage[Routes$Start == "Saint Gilles"] = 11
+Routes$Stage[Routes$Start == "Cavaillon"] = 12
+Routes$Stage[Routes$Start == "Pertuis"] = 13
+Routes$Stage[Routes$Start == "Meyrargues"] = 14
+Routes$Stage[Routes$Start == "Briançon"] = 14
+Routes$Stage[Routes$Start == "Oulx"] = 15
+
+
 
 # Maps function with route in different colors ans with Distance labeled
 map3C_new = function(Bike, Train, Places, StartEnd, Title) {
@@ -64,12 +76,12 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
       tm_basemap(providers$Esri.WorldImagery)
     
   } else {
-    tm_shape(StartEnd, zindex = 0) +
-      tm_symbols(fill = "darkred", col_alpha = 0, size = 0.6) +
-      tm_text("Place", ymod = 2, xmod = -3) +
     tm_shape(Places, zindex = 0) +
       tm_symbols(size = 0.3, fill = "grey40") +
       # tm_text("Place") +
+    tm_shape(StartEnd, zindex = 0) +
+      tm_symbols(fill = "darkred", col_alpha = 0, size = 0.6) +
+      tm_text("Place", ymod = 2, xmod = -3) +
     tm_shape(Bike) +
       tm_lines(
         lwd = 4,
@@ -107,6 +119,12 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
           # "Notes"
         )
       ) +
+      tm_add_legend(type = "lines",
+                    labels = c("Bike", "Train"),
+                    fill = c("black", "grey20"),
+                    lwd = c(4, 2),
+                    lty = c("solid", "dashed"),
+                    position = tm_pos_in("right", "top")) +
        tm_text("Distance") +
       tm_title(Title) +
       tm_basemap(providers$Esri.WorldGrayCanvas) +
@@ -140,9 +158,10 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
           # "Travel",
           # "Acomodation",
           # "Notes"
-        )
+        ),
+        col.legend = tm_legend_hide()
       ) +
-      tm_legend(show = FALSE) +
+      # tm_legend(show = FALSE) +
       # tm_text("Distance") +
       tm_shape(Train) +
       tm_lines(
@@ -162,12 +181,11 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
           # "Notes"
         )
       ) +
-      # tm_add_legend(type = "lines", # for train. not working.
-      #               lwd = 1.5,
-      #               lty = "dashed",
-      #               col = "grey20",
-      #               labels = "Train",
-      #               position = "bottomright") +
+    tm_add_legend(type = "lines",
+      labels = c("Bike", "Train"),
+      fill = c("black", "grey20"),
+      lwd = c(4, 2),
+      lty = c("solid", "dashed")) +
       tm_shape(StartEnd, zindex = 0) +
         # tm_markers() +
         tm_symbols(fill = "darkred", col_alpha = 0, size = 0.6) +
@@ -202,12 +220,21 @@ StartEnd2 = Places2 |> filter(Place == "Madrid" | Place == "Montpellier")
 
 map3C_new(Train = Train2, Bike = Bike2, Places = Places2, StartEnd = StartEnd2, Title = Title2)
 
+# Section 3
+Bike3 = Routes3 |> filter(Mode == "Bike")
+Train3 = Routes3 |> filter(Mode != "Bike")
+Train3$Distance[2] = NA # fide distance total train
+Title3 = "Section 3: Montpellier - Torino"
+StartEnd3 = Places3 |> filter(Place == "Montpellier" | Place == "Torino")
+
+map3C_new(Train = Train3, Bike = Bike3, Places = Places3, StartEnd = StartEnd3, Title = Title3)
 
 # All 3 sections
 Bike_all = Routes |> filter(Mode == "Bike")
 Train_all = Routes |> filter(Mode != "Bike")
+Train_all$Distance[5] = NA # fide distance total train
 Title_all = "Route 3c: Coimbra - Madrid - Montpellier"
-StartEnd_all = Places |> filter(Place == "Coimbra" | Place == "Madrid" | Place == "Montpellier")
+StartEnd_all = Places |> filter(Place == "Coimbra" | Place == "Madrid" | Place == "Montpellier" | Place == "Torino")
 StartEnd_all = StartEnd_all[-3,]
 
 map3C_all(Train = Train_all, Bike = Bike_all, Places = Places, StartEnd = StartEnd_all, Title = Title_all)
