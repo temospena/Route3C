@@ -14,7 +14,7 @@ library(mapview)
 # Route1_2 = st_read("osm-gpx/site/12_fundao-monsanto.gpx", layer = "tracks")
 # Train1 = st_read("osm-gpx/site/Train1.gpkg")
 Places1 = st_read("osm-gpx/site/Places_stage1.gpkg")
-Routes1 = st_read("osm-gpx/site/Routes_stage1.gpkg")
+Routes1 = st_read("osm-gpx/site/Routes_stage1.gpkg", layer = "updated")
 
 
 ## Section 2
