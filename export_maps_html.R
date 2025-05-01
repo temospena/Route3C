@@ -39,9 +39,10 @@ Routes$Stage[Routes$Start == "Montpellier"] = 10
 Routes$Stage[Routes$Start == "Saint Gilles"] = 11
 Routes$Stage[Routes$Start == "Cavaillon"] = 12
 Routes$Stage[Routes$Start == "Pertuis"] = 13
-Routes$Stage[Routes$Start == "Meyrargues"] = 14
+Routes$Stage[Routes$Start == "Manosque"] = 13
 Routes$Stage[Routes$Start == "Briançon"] = 14
-Routes$Stage[Routes$Start == "Oulx"] = 15
+Routes$Stage[Routes$Start == "Bardonechia"] = 14
+Routes$Stage[Routes$Start == "Collegno"] = 14
 
 
 
