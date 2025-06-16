@@ -151,6 +151,7 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
         lwd = 4,
         col = "Stage",
         palette = "carto.safe",
+        col.legend = tm_legend(show = FALSE),
         # id = "End",
         popup.vars = c(
           "Name",
@@ -166,8 +167,10 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
           # "Notes"
         ),
         # col.legend = tm_legend_hide(),
-        col.legend = tm_legend(show = FALSE)
+        # col.legend = NULL
+        # legend.show = FALSE
       ) +
+        # tm_hide_legend("Stage") +
       # tm_text("Distance") +
       tm_shape(Train) +
       tm_lines(
@@ -244,3 +247,6 @@ StartEnd_all = Places |> filter(Place == "Coimbra" | Place == "Madrid" | Place =
 StartEnd_all = StartEnd_all[-3,]
 
 map3C_all(Train = Train_all, Bike = Bike_all, Places = Places, StartEnd = StartEnd_all, Title = Title_all)
+# Não consigo remover a legenda dos stages!!! já tentei de tudo. Há umas semanas estava a dar..
+# será de estar a usar a tmap 4.1 em vez da 4.0?
+# testar depois e apagar isto.
