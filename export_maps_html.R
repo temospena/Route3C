@@ -31,10 +31,10 @@ Routes3 = st_read("osm-gpx/site/Routes_stage3.gpkg")
 Places = rbind(Places1, Places2, Places3)
 Routes = rbind(Routes1, Routes2, Routes3)
 Routes$Stage[Routes$Start == "Madrid"] = 6
-Routes$Stage[Routes$Start == "Portbou"] = 6
+Routes$Stage[Routes$Start == "Cerbere"] = 6
 Routes$Stage[Routes$Start == "Canet-en-Roussillon"] = 7
 Routes$Stage[Routes$Start == "Gruissan"] = 8
-Routes$Stage[Routes$Start == "Vias Plage"] = 9
+Routes$Stage[Routes$Start == "Vias"] = 9
 Routes$Stage[Routes$Start == "Montpellier"] = 10
 Routes$Stage[Routes$Start == "Saint Gilles"] = 11
 Routes$Stage[Routes$Start == "Cavaillon"] = 12
@@ -42,7 +42,8 @@ Routes$Stage[Routes$Start == "Pertuis"] = 13
 Routes$Stage[Routes$Start == "Manosque"] = 13
 Routes$Stage[Routes$Start == "Briançon"] = 14
 Routes$Stage[Routes$Start == "Bardonechia"] = 14
-Routes$Stage[Routes$Start == "Collegno"] = 14
+Routes$Stage[Routes$Start == "Bussoleno"] = 14
+# Routes$Stage[Routes$Start == "Collegno"] = 14
 
 
 
@@ -53,6 +54,7 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
       tm_lines(
         lwd = 5,
         col = "Stage",
+        palette = "carto.safe",
         # id = "End",
         popup.vars = c(
           "Name",
@@ -87,6 +89,8 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
       tm_lines(
         lwd = 4,
         col = "Stage",
+        # col.scale = tm_scale(palette = "carto.safe"),
+        palette = "carto.safe",
         # id = "End",
         popup.vars = c(
           "Name",
@@ -146,6 +150,7 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
       tm_lines(
         lwd = 4,
         col = "Stage",
+        palette = "carto.safe",
         # id = "End",
         popup.vars = c(
           "Name",
@@ -160,9 +165,9 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
           # "Acomodation",
           # "Notes"
         ),
-        col.legend = tm_legend_hide()
+        # col.legend = tm_legend_hide(),
+        col.legend = tm_legend(show = FALSE)
       ) +
-      # tm_legend(show = FALSE) +
       # tm_text("Distance") +
       tm_shape(Train) +
       tm_lines(
@@ -202,7 +207,7 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
     
 }
 
-
+#88CCEE,#CC6677,#DDCC77,#117733,#332288,#AA4499,#44AA99,#999933,#882255,#661100,#6699CC,#888888
 ## Plot maps
 
 # Section 1
@@ -224,7 +229,7 @@ map3C_new(Train = Train2, Bike = Bike2, Places = Places2, StartEnd = StartEnd2, 
 # Section 3
 Bike3 = Routes3 |> filter(Mode == "Bike")
 Train3 = Routes3 |> filter(Mode != "Bike")
-Train3$Distance[2] = NA # fide distance total train
+# Train3$Distance[2] = NA # fide distance total train
 Title3 = "Section 3: Montpellier - Torino"
 StartEnd3 = Places3 |> filter(Place == "Montpellier" | Place == "Torino")
 
@@ -233,7 +238,7 @@ map3C_new(Train = Train3, Bike = Bike3, Places = Places3, StartEnd = StartEnd3, 
 # All 3 sections
 Bike_all = Routes |> filter(Mode == "Bike")
 Train_all = Routes |> filter(Mode != "Bike")
-Train_all$Distance[5] = NA # fide distance total train
+# Train_all$Distance[5] = NA # fide distance total train
 Title_all = "Route 3c: Coimbra - Madrid - Montpellier"
 StartEnd_all = Places |> filter(Place == "Coimbra" | Place == "Madrid" | Place == "Montpellier" | Place == "Torino")
 StartEnd_all = StartEnd_all[-3,]
