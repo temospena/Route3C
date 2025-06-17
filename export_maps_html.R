@@ -54,7 +54,7 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
       tm_lines(
         lwd = 5,
         col = "Stage",
-        palette = "carto.safe",
+        # palette = "carto.safe", # use with v.4
         # id = "End",
         popup.vars = c(
           "Name",
@@ -90,7 +90,7 @@ map3C_new = function(Bike, Train, Places, StartEnd, Title) {
         lwd = 4,
         col = "Stage",
         # col.scale = tm_scale(palette = "carto.safe"),
-        palette = "carto.safe",
+        # palette = "carto.safe", # use with v.4
         # id = "End",
         popup.vars = c(
           "Name",
@@ -150,7 +150,7 @@ map3C_all = function(Bike, Train, Places, StartEnd, Title) {
       tm_lines(
         lwd = 4,
         col = "Stage",
-        # palette = "carto.safe",
+        # palette = "carto.safe", # use with v.4
         col.legend = tm_legend(show = FALSE),
         # id = "End",
         popup.vars = c(
